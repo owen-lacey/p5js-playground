@@ -21,6 +21,7 @@ select.innerHTML = doodleNames
   .join('')
 
 let instance: p5 | null = null
+const storageKey = 'p5-doodle-selected'
 
 const mountDoodle = (name: string) => {
   if (instance) {
@@ -30,7 +31,11 @@ const mountDoodle = (name: string) => {
 }
 
 select.addEventListener('change', () => {
+  localStorage.setItem(storageKey, select.value)
   mountDoodle(select.value)
 })
 
-mountDoodle(doodleNames[0])
+const saved = localStorage.getItem(storageKey)
+const initial = saved && doodleNames.includes(saved) ? saved : doodleNames[0]
+select.value = initial
+mountDoodle(initial)
